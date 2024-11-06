@@ -12,10 +12,6 @@ Welcome to my **Python Projects and Code Scripts** repository! This collection s
 2. [Key Projects and Highlights](#key-projects-and-highlights)
 3. [Skills and Frameworks](#skills-and-frameworks)
 4. [Installation](#installation)
-5. [Usage Guide](#usage-guide)
-6. [Contributing](#contributing)
-7. [License](#license)
-8. [Contact](#contact)
 
 ---
 
@@ -32,15 +28,20 @@ This repository documents my journey in mastering **Python**. Each project and c
    - **Email Notifier**: Sends notifications via email for reminders or alerts.
    - **Web Scraper**: Gathers data from websites using BeautifulSoup and Selenium.
 
-### 2. **Data Analysis Projects**
+### 2. **Analytics (Business / Data / Operations) Projects**
    - **Data Cleaning with Pandas**: Cleans and processes raw datasets for analysis.
    - **Exploratory Data Analysis (EDA)**: Visualizes and explores datasets using Matplotlib and Seaborn.
+     
 
 ### 3. **Python Frameworks**
    - **Flask Web Application**: A simple web application to manage tasks, showcasing Flask's capabilities for backend development.
    - **Streamlit Dashboard**: An interactive dashboard for real-time data analysis, built using Streamlit.
 
-### 4. **Machine Learning and AI (Beginner Projects)**
+### 4. Process Optimization and Improvement Projects
+   - **Six Sigma**: Using the quality improvement methodology to count the number of flaws in a process and aim to systematically fix them.
+   - **Business Optimization / Analysis**: Improving productivity, performance, and efficiency. 
+
+##  5. **Machine Learning and AI (Beginner Projects)**
    - **Predictive Model**: Basic model for predicting trends using Scikit-Learn.
    - **Natural Language Processing**: Text analysis project for sentiment analysis using NLTK.
 
@@ -64,3 +65,7 @@ To run any of the scripts or projects in this repository, follow these steps:
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/your-username/python-learning-portfolio.git
+
+**Contact**
+
+[[LinkedIn](https://www.linkedin.com/in/princehobby/)] | [[Personal Blog](https://medium.com/@PrinceData)]
