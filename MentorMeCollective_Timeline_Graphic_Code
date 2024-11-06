@@ -1,0 +1,116 @@
+# Objective
+
+Establish a visual graphic for scholars to ensure uniformity and accessibility for the Mentor Me Collective program. 
+
+Create a graphic, designed with accessibility and uniformity in mind, to provide scholars with a clear and engaging representation of the time commitment for the cohort. 
+
+# Use Case
+
+This graphic will serve as a quick reference guide, ensuring that all scholars have a shared understanding of the program's timeline and expectations.
+
+import graphviz
+from datetime import datetime, timedelta
+import pandas as pd
+
+def create_certificate_digraph(cert_name, courses, start_date):
+    # Calculate dates for each course (11 weeks total)
+    total_days = 77  # 11 weeks * 7 days
+    days_per_course = total_days // len(courses)
+    
+    # Create digraph
+    dot = graphviz.Digraph(comment=cert_name)
+    dot.attr(rankdir='TB')
+    
+    # Add title
+    dot.attr(label=f'{cert_name}\
+Start Date: {start_date.strftime("%Y-%m-%d")}', labelloc='t', fontsize='16')
+    
+    # Node styling
+    dot.attr('node', shape='box', style='rounded,filled', fillcolor='lightblue')
+
+# Add nodes and edges
+    for i, course in enumerate(courses):
+        course_start = start_date + timedelta(days=i*days_per_course)
+        course_end = course_start + timedelta(days=days_per_course-1)
+        
+        node_label = f"{course}\
+Start: {course_start.strftime('%Y-%m-%d')}\
+End: {course_end.strftime('%Y-%m-%d')}"
+        dot.node(f'course_{i}', node_label)
+        
+        if i > 0:
+            dot.edge(f'course_{i-1}', f'course_{i}')
+    
+    return dot
+
+# Course lists
+advanced_analytics_courses = [
+    'Foundations of Data Science',
+    'Get Started with Python',
+    'Go Beyond the Numbers: Translate Data into Insights',
+    'The Power of Statistics',
+    'Regression Analysis: Simplify Complex Data Relationships',
+    'Machine Learning: Concepts and Applications',
+    'Advanced Data Analytics Capstone Project'
+]
+
+cybersecurity_courses = [
+    'Foundations of Cybersecurity',
+    'Play It Safe: Manage Security Risks',
+    'Connect and Protect: Networks and Network Security',
+    'Tools of the Trade: Linux and SQL',
+    'Assets, Threats, and Vulnerabilities',
+    'Sound the Alarm: Detection and Response',
+    'Automate Cybersecurity Tasks with Python',
+    'Put It to Work: Prepare for Cybersecurity Jobs'
+]
+
+data_analytics_courses = [
+    'Foundations of Data Analytics',
+    'Ask Questions to Make Data-Driven Decisions',
+    'Prepare Data for Exploration',
+    'Process Data from Dirty to Clean',
+    'Analyze Data to Answer Questions',
+    'Share Data Through the Art of Visualization',
+    'Data Analysis with R Programming',
+    'Google Data Analytics Capstone'
+]
+
+# Create digraphs with specified start dates
+ada_start = datetime(2024, 4, 12)
+cyber_start = datetime(2024, 9, 4)
+da_start = datetime(2004, 4, 12)
+
+# Generate and save the diagrams
+ada_dot = create_certificate_digraph('Google Advanced Data Analytics Certificate', 
+                                   advanced_analytics_courses, 
+                                   ada_start)
+ada_dot.render('advanced_analytics_timeline', format='png', cleanup=True)
+
+cyber_dot = create_certificate_digraph('Google Cybersecurity Certificate', 
+                                     cybersecurity_courses, 
+                                     cyber_start)
+
+cyber_dot = create_certificate_digraph('Google Cybersecurity Certificate', 
+                                     cybersecurity_courses, 
+                                     cyber_start)
+cyber_dot.render('cybersecurity_timeline', format='png', cleanup=True)
+
+da_dot = create_certificate_digraph('Google Data Analytics Certificate', 
+                                  data_analytics_courses, 
+                                  da_start)
+da_dot.render('data_analytics_timeline', format='png', cleanup=True)
+
+# Display the images
+from IPython.display import Image, display
+
+print("Advanced Data Analytics Certificate Timeline (Start: April 12, 2024):")
+display(Image(filename='advanced_analytics_timeline.png'))
+
+print("\
+Data Analytics Certificate Timeline (Start: April 12, 2004):")
+display(Image(filename='data_analytics_timeline.png'))
+
+print("\
+Cybersecurity Certificate Timeline (Start: September 4, 2024):")
+display(Image(filename='cybersecurity_timeline.png'))
