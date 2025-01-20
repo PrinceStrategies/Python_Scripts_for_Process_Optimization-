@@ -1,0 +1,146 @@
+import graphviz
+from datetime import datetime, timedelta
+
+# Define all course lists
+digital_marketing_courses = [
+    'Foundations of Digital Marketing and E-commerce',
+    'Attract and Engage Customers',
+    'From Likes to Leads',
+    'Think Outside the Inbox',
+    'Assess for Success',
+    'Market with Social Media'
+]
+
+it_support_courses = [
+    'Technical Support Fundamentals',
+    'The Bits and Bytes of Computer Networking',
+    'Operating Systems and You',
+    'System Administration and IT Infrastructure Services',
+    'IT Security: Defense against the Digital Dark Arts'
+]
+
+project_management_courses = [
+    'Foundations of Project Management',
+    'Project Initiation',
+    'Project Planning',
+    'Project Execution',
+    'Agile Project Management',
+    'Applying Project Management'
+]
+
+cybersecurity_courses = [
+    'Foundations of Cybersecurity',
+    'Play It Safe: Manage Security Risks',
+    'Connect and Protect: Networks and Network Security',
+    'Tools of the Trade: Linux and SQL',
+    'Assets, Threats, and Vulnerabilities',
+    'Sound the Alarm: Detection and Response',
+    'Automate Cybersecurity Tasks with Python',
+    'Put It to Work: Prepare for Cybersecurity Jobs'
+]
+
+data_analytics_courses = [
+    'Foundations: Data, Data, Everywhere',
+    'Ask Questions to Make Data-Driven Decisions',
+    'Prepare Data for Exploration',
+    'Process Data from Dirty to Clean',
+    'Analyze Data to Answer Questions',
+    'Share Data Through the Art of Visualization',
+    'Data Analysis with R Programming',
+    'Google Data Analytics Capstone'
+]
+
+advanced_data_analytics_courses = [
+    'Foundations of Data Science',
+    'Get Started with Python',
+    'Go Beyond the Numbers: Translate Data into Insights',
+    'The Power of Statistics',
+    'Regression Analysis: Simplify Complex Data Relationships',
+    'The Nuts and Bolts of Machine Learning',
+    'Google Advanced Data Analytics Capstone'
+]
+
+### Creating the timelines one by one
+certificates = {
+    'Cybersecurity': (cybersecurity_courses, 'Cybersecurity Certificate'),
+    'Digital_Marketing': (digital_marketing_courses, 'Digital Marketing & E-commerce Certificate'),
+    'IT_Support': (it_support_courses, 'IT Support Certificate'),
+    'Project_Management': (project_management_courses, 'Project Management Certificate'),
+    'Data_Analytics': (data_analytics_courses, 'Data Analytics Certificate'),
+    'Advanced_Data_Analytics': (advanced_data_analytics_courses, 'Advanced Data Analytics Certificate')
+}
+
+start_date = datetime(2025, 2, 7)
+end_date = datetime(2025, 5, 30)
+
+def create_certificate_digraph_with_footer(cert_name, courses, start_date, end_date):
+    total_duration = (end_date - start_date).days
+    regular_courses_duration = int(total_duration * (10/14))
+    days_per_course = regular_courses_duration // len(courses)
+    
+    dot = graphviz.Digraph(comment=cert_name)
+    dot.attr(rankdir='TB')
+    
+    # Title
+    dot.attr(label=f'{cert_name}\
+Program Duration: {start_date.strftime("%B %d, %Y")} - {end_date.strftime("%B %d, %Y")}', 
+            labelloc='t', fontsize='16')
+    
+    # Add courses
+    dot.attr('node', shape='box', style='rounded,filled', fillcolor='lightblue')
+    
+    for i, course in enumerate(courses):
+        course_start = start_date + timedelta(days=i*days_per_course)
+        course_end = course_start + timedelta(days=days_per_course-1)
+        
+        node_label = f"{course}\
+Start: {course_start.strftime('%Y-%m-%d')}\
+End: {course_end.strftime('%Y-%m-%d')}"
+        dot.node(f'course_{i}', node_label)
+        
+        if i > 0:
+            dot.edge(f'course_{i-1}', f'course_{i}')
+    
+    # Add capstone
+    capstone_start = start_date + timedelta(days=int(total_duration * (10/14)))
+    capstone_end = end_date
+    
+    dot.attr('node', fillcolor='lightgreen')
+    capstone_label = f"Capstone Portfolio Project\
+Start: {capstone_start.strftime('%Y-%m-%d')}\
+End: {capstone_end.strftime('%Y-%m-%d')}"
+    dot.node('capstone', capstone_label)
+    
+    dot.edge(f'course_{len(courses)-1}', 'capstone')
+    
+    # Add completion requirement text
+    dot.attr('node', shape='plaintext', fillcolor='white')
+    dot.node('completion_text', 'All courses and capstone project must be completed to earn certificate')
+    dot.edge('capstone', 'completion_text', style='invis')
+    
+    # Add footer
+    dot.attr('node', shape='plaintext', fillcolor='white')
+    dot.node('footer', '© Mentor Me Collective www.mentormecollective.org')
+    dot.edge('completion_text', 'footer', style='invis')
+    
+    return dot
+
+# Generate first three timelines
+for cert_key in ['Cybersecurity', 'Digital_Marketing', 'IT_Support']:
+    courses, title = certificates[cert_key]
+    dot = create_certificate_digraph_with_footer(title, courses, start_date, end_date)
+    filename = f'{cert_key}_timeline'
+    dot.render(filename, format='png', cleanup=True)
+    print(f"\
+{title} Timeline:")
+    display(Image(filename=f'{filename}.png'))
+
+# Generate remaining timelines
+for cert_key in ['Project_Management', 'Data_Analytics', 'Advanced_Data_Analytics']:
+    courses, title = certificates[cert_key]
+    dot = create_certificate_digraph_with_footer(title, courses, start_date, end_date)
+    filename = f'{cert_key}_timeline'
+    dot.render(filename, format='png', cleanup=True)
+    print(f"\
+{title} Timeline:")
+    display(Image(filename=f'{filename}.png'))
